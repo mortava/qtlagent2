@@ -1,4 +1,5 @@
 import tqlKnowledge from '../../data/tql-knowledge.json'
+import { programMatrices, knowledgeBase, searchKnowledge } from './knowledgeBase'
 
 export function buildSystemPrompt(): string {
   const k = tqlKnowledge
@@ -6,18 +7,26 @@ export function buildSystemPrompt(): string {
   const productList = k.products
     .map(
       (p) =>
-        `### ${p.name} (${p.category})\n${p.description}\n${p.keyFeatures.map((f) => `- ${f}`).join('\n')}`
+        `### ${p.name} (${p.category})\n${p.description}\n${p.keyFeatures.map((f: string) => `- ${f}`).join('\n')}`
     )
     .join('\n\n')
 
   const brokerBenefits = k.brokerPartnership.benefits
-    .filter((b) => !b.toLowerCase().includes('scenario desk'))
-    .map((b) => `- ${b}`)
+    .filter((b: string) => !b.toLowerCase().includes('scenario desk'))
+    .map((b: string) => `- ${b}`)
     .join('\n')
 
   const operationalHighlights = k.operationalHighlights
-    .filter((h) => !h.toLowerCase().includes('scenario desk'))
-    .map((h) => `- ${h}`)
+    .filter((h: string) => !h.toLowerCase().includes('scenario desk'))
+    .map((h: string) => `- ${h}`)
+    .join('\n')
+
+  // Build program matrices reference from Agent Lightning training data
+  const programsRef = programMatrices
+    .map(
+      (p) =>
+        `- ${p.programName} (${p.occupancy}): Min ${p.creditScoreMin} FICO, $${p.loanAmountMin.toLocaleString()}-$${p.loanAmountMax.toLocaleString()}, Purchase LTV ${p.ltvPurchase}%, R/T LTV ${p.ltvRateTerm}%, C/O LTV ${p.ltvCashOut}%${p.dscrMin ? `, DSCR ≥${p.dscrMin}` : ''}${p.dtiMax ? `, DTI ≤${p.dtiMax}%` : ''}${p.reserves ? `, Reserves: ${p.reserves}` : ''}`
+    )
     .join('\n')
 
   return `# SYSTEM INSTRUCTIONS: Q AI Agent
@@ -85,5 +94,48 @@ ${operationalHighlights}
 - Submit a Borrower: ${k.brokerPartnership.submissionPortal}
 - Eligibility Tool: ${k.brokerPartnership.eligibilityTool}
 - Pricing Tool: ${k.brokerPartnership.pricingTool}
-- Become a Partner: Complete the Broker Application at tqlpartner.totalqualitylending.com/forms`
+- Become a Partner: Complete the Broker Application at tqlpartner.totalqualitylending.com/forms
+
+---
+
+## PROGRAM MATRICES (Agent Lightning Training Data)
+
+${programsRef}
+
+---
+
+## DETAILED GUIDELINES REFERENCE
+
+${knowledgeBase.map((entry) => `### ${entry.title}\n${entry.content}`).join('\n\n')}`
+}
+
+/**
+ * Build a RAG-enhanced system prompt by injecting context relevant to the user's query.
+ * Uses Agent Lightning keyword-indexed search for fast retrieval.
+ */
+export function buildRAGSystemPrompt(userQuery: string): string {
+  const basePrompt = buildSystemPrompt()
+
+  // Retrieve relevant knowledge entries using Agent Lightning search
+  const relevantEntries = searchKnowledge(userQuery)
+
+  if (relevantEntries.length === 0) {
+    return basePrompt
+  }
+
+  const ragContext = relevantEntries
+    .map((entry, i) => `${i + 1}. ${entry.title}: ${entry.content}`)
+    .join('\n\n')
+
+  return `${basePrompt}
+
+---
+
+## RAG CONTEXT (Retrieved for this specific query)
+The following guidelines are most relevant to the user's current question:
+
+${ragContext}
+
+---
+Answer using ONLY the information above. Cite exact numbers.`
 }

@@ -1,5 +1,5 @@
 import type { Message } from './store'
-import { buildSystemPrompt } from './system-prompt'
+import { buildRAGSystemPrompt } from './system-prompt'
 
 export async function streamChat(
   messages: Message[],
@@ -8,7 +8,12 @@ export async function streamChat(
   onError: (error: string) => void,
   signal?: AbortSignal
 ) {
-  const systemPrompt = buildSystemPrompt()
+  // Extract last user message for RAG context retrieval
+  const lastUserMsg = [...messages].reverse().find((m) => m.role === 'user')
+  const userQuery = lastUserMsg?.content || ''
+
+  // Build RAG-enhanced system prompt using Agent Lightning knowledge base
+  const systemPrompt = buildRAGSystemPrompt(userQuery)
 
   const apiMessages = messages.map((m) => ({
     role: m.role,

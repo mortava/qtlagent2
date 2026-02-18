@@ -36,7 +36,7 @@ export default async function handler(req: any, res: any) {
         model,
         messages: chatMessages,
         stream: true,
-        temperature: 0.7,
+        temperature: 0.1,
         max_tokens: 4096,
       }),
     })
