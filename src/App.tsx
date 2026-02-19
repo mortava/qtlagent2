@@ -246,30 +246,17 @@ export default function App() {
               alt="TQL"
               style={{ width: '24px', height: '24px', borderRadius: '3px' }}
             />
-            <div className="flex flex-col" style={{ lineHeight: 1.1 }}>
-              <span
-                style={{
-                  fontFamily: 'var(--font-poppins)',
-                  fontSize: '10px',
-                  fontWeight: 500,
-                  color: 'var(--text-secondary)',
-                  letterSpacing: '0.01em',
-                }}
-              >
-                Powered by Total Quality Lending
-              </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-poppins)',
-                  fontSize: '20px',
-                  fontWeight: 700,
-                  color: 'var(--foreground)',
-                  letterSpacing: '0.03em',
-                }}
-              >
-                FIT
-              </span>
-            </div>
+            <span
+              style={{
+                fontFamily: 'var(--font-poppins)',
+                fontSize: '12px',
+                fontWeight: 500,
+                color: 'var(--text-secondary)',
+                letterSpacing: '0.01em',
+              }}
+            >
+              Powered by Total Quality Lending
+            </span>
             {activeConversation?.title && activeConversation.title !== 'New Chat' && (
               <span
                 className="truncate"
