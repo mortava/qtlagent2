@@ -78,7 +78,7 @@ export default function WelcomeScreen({
           }}
         >
           <span style={{ color: 'var(--foreground)' }}>GET </span>
-          <span style={{ color: '#2563eb' }}>FIT</span>
+          <span style={{ color: '#3b82f6' }}>FIT</span>
         </span>
       </div>
 
