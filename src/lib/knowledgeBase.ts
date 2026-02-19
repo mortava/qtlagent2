@@ -279,6 +279,138 @@ Max Cash-Out Amounts:
     priority: 10
   },
   {
+    id: "dscr-matrix-001",
+    category: "DSCR",
+    subcategory: "Full Matrix",
+    title: "DSCR Program Full Matrix by FICO and Loan Amount",
+    content: `DSCR 1.00+ (Standard Qualification):
+
+Min FICO 740, Loan ≤$1.0M: Purchase 85%, R/T 80%, Cash-Out 75%
+Min FICO 740, Loan ≤$1.5M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 740, Loan ≤$2.0M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 740, Loan ≤$2.5M: Purchase 75%, R/T 75%, Cash-Out 70%
+Min FICO 740, Loan ≤$3.0M: Purchase 70%, R/T 70%, Cash-Out 65%
+Min FICO 740, Loan ≤$3.5M: Purchase 70%, R/T 65%, Cash-Out N/A
+
+Min FICO 720, Loan ≤$1.0M: Purchase 85%, R/T 80%, Cash-Out 75%
+Min FICO 720, Loan ≤$1.5M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 720, Loan ≤$2.0M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 720, Loan ≤$2.5M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 720, Loan ≤$3.0M: Purchase 75%, R/T 75%, Cash-Out 70%
+Min FICO 720, Loan ≤$3.5M: Purchase 70%, R/T 70%, Cash-Out N/A
+
+Min FICO 700, Loan ≤$1.0M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 700, Loan ≤$1.5M: Purchase 80%, R/T 75%, Cash-Out 70%
+Min FICO 700, Loan ≤$2.0M: Purchase 75%, R/T 75%, Cash-Out 70%
+
+Min FICO 680, Loan ≤$1.0M: Purchase 75%, R/T 75%, Cash-Out 70%
+Min FICO 680, Loan ≤$1.5M: Purchase 75%, R/T 70%, Cash-Out 65%
+
+Min FICO 660, Loan ≤$1.0M: Purchase 70%, R/T 70%, Cash-Out 65%
+
+DSCR 0.75-0.99 (Below 1.0 Ratio):
+Min FICO 720, Loan ≤$1.5M: Purchase 75%, R/T 75%, Cash-Out 70%
+Min FICO 700, Loan ≤$1.0M: Purchase 70%, R/T 70%, Cash-Out 65%
+
+No Ratio DSCR:
+Min FICO 720, Loan ≤$1.5M: Purchase 70%, R/T 70%, Cash-Out 65%
+Min FICO 700, Loan ≤$1.0M: Purchase 65%, R/T 65%, Cash-Out 60%
+
+Foreign National DSCR:
+Min FICO N/A, Loan ≤$1.5M: Purchase 65%, R/T 65%, Cash-Out 65%
+
+Reserve Requirements by Loan Amount:
+- Loan ≤$1.0M: 3 Months PITIA
+- Loan $1.0M-$1.5M: 6 Months PITIA
+- Loan $1.5M-$2.0M: 9 Months PITIA
+- Loan $2.0M-$2.5M: 12 Months PITIA
+- Loan $2.5M-$3.0M: 18 Months PITIA
+- DSCR <1.00x: 6 Months PITIA minimum
+- Foreign Nationals: 12 Months PITIA
+
+Source: Investor Advantage Program Matrix`,
+    keywords: ["dscr", "dscr matrix", "dscr ltv", "dscr cash out", "dscr purchase", "investor", "dscr ratio", "dscr score", "dscr loan amount", "cash out", "cash-out", "investment"],
+    priority: 10
+  },
+  {
+    id: "nonagency-matrix-001",
+    category: "NON-AGENCY",
+    subcategory: "Full Matrix",
+    title: "NON-AGENCY Program Full Matrix by FICO and Loan Amount",
+    content: `NON-AGENCY Full Doc & Alt-Doc (Primary Residence):
+
+Min FICO 740, Loan ≤$1.5M: Purchase 90%, R/T 90%, Cash-Out 85%
+Min FICO 740, Loan ≤$2.0M: Purchase 85%, R/T 85%, Cash-Out 80%
+Min FICO 740, Loan ≤$2.5M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 740, Loan ≤$3.0M: Purchase 75%, R/T 75%, Cash-Out 70%
+Min FICO 740, Loan ≤$4.0M: Purchase 70%, R/T 70%, Cash-Out 65%
+
+Min FICO 720, Loan ≤$1.5M: Purchase 90%, R/T 90%, Cash-Out 80%
+Min FICO 720, Loan ≤$2.0M: Purchase 85%, R/T 85%, Cash-Out 80%
+Min FICO 720, Loan ≤$2.5M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 720, Loan ≤$3.0M: Purchase 75%, R/T 75%, Cash-Out 70%
+
+Min FICO 700, Loan ≤$1.5M: Purchase 85%, R/T 85%, Cash-Out 80%
+Min FICO 700, Loan ≤$2.0M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 700, Loan ≤$2.5M: Purchase 80%, R/T 75%, Cash-Out 70%
+
+Min FICO 680, Loan ≤$1.5M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 680, Loan ≤$2.0M: Purchase 75%, R/T 75%, Cash-Out 70%
+
+Min FICO 660, Loan ≤$1.5M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 660, Loan ≤$2.0M: Purchase 75%, R/T 75%, Cash-Out 70%
+
+Min FICO 640, Loan ≤$1.0M: Purchase 75%, R/T 75%, Cash-Out 70%
+
+NON-AGENCY (Second Home):
+Min FICO 720, Loan ≤$1.5M: Purchase 85%, R/T 85%, Cash-Out 80%
+Min FICO 700, Loan ≤$1.5M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 680, Loan ≤$1.5M: Purchase 75%, R/T 75%, Cash-Out 70%
+
+NON-AGENCY (Investment Property):
+Min FICO 720, Loan ≤$1.5M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 700, Loan ≤$1.5M: Purchase 75%, R/T 75%, Cash-Out 70%
+Min FICO 680, Loan ≤$1.5M: Purchase 75%, R/T 70%, Cash-Out 65%
+
+Bank Statement Programs (Primary):
+Min FICO 720, Loan ≤$1.5M: Purchase 85%, R/T 85%, Cash-Out 80%
+Min FICO 700, Loan ≤$1.5M: Purchase 80%, R/T 80%, Cash-Out 75%
+Min FICO 680, Loan ≤$1.5M: Purchase 80%, R/T 75%, Cash-Out 70%
+
+Source: Non-Agency Program Matrix`,
+    keywords: ["non-agency", "nonagency", "non agency", "primary", "second home", "full doc", "alt doc", "bank statement", "loan amount", "ltv matrix"],
+    priority: 10
+  },
+  {
+    id: "smart-equity-matrix-001",
+    category: "Smart Equity",
+    subcategory: "Full Matrix",
+    title: "Smart Equity (2nd Mortgage) Full Matrix",
+    content: `Smart Equity HELOAN (Primary Residence - Income Qualifying):
+
+Min FICO 720, CLTV ≤80%: Loan $50K-$350K
+Min FICO 700, CLTV ≤75%: Loan $50K-$350K
+Min FICO 680, CLTV ≤70%: Loan $50K-$250K
+Min FICO 660, CLTV ≤65%: Loan $50K-$200K
+
+Smart Equity HELOAN DSCR (Investment - DSCR Qualifying):
+Min FICO 720, CLTV ≤75%: Loan $75K-$350K
+Min FICO 700, CLTV ≤70%: Loan $75K-$350K
+Min FICO 680, CLTV ≤65%: Loan $75K-$250K
+
+Key Rules:
+- Subordinate to 1st lien only (no 3rd liens)
+- 1st lien must be current (0x30x12)
+- Max loan amount $350,000
+- Property types: SFR, PUD, Townhome, 2-4 Units, Warrantable Condos
+- NO appraisal waivers allowed
+- Available in: CA, GA, FL, AL, OR, TN (Income); TN & TX (DSCR only)
+
+Source: Smart Equity Program Matrix`,
+    keywords: ["smart equity", "heloan", "second mortgage", "2nd mortgage", "heloc", "cltv", "subordinate"],
+    priority: 9
+  },
+  {
     id: "income-001",
     category: "Income",
     subcategory: "Full Documentation",
