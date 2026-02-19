@@ -40,9 +40,9 @@
   --sidebar-text-hover: rgba(15, 15, 15, 0.8);
   --sidebar-divider: rgba(128, 128, 128, 0.2);
 
-  /* Interactive */
-  --interactive-accent: rgba(21, 21, 21, 1);
-  --interactive-accent-hover: rgba(21, 21, 21, 0.8);
+  /* Interactive — Navy Blue accent */
+  --interactive-accent: #1e3a5f;
+  --interactive-accent-hover: #162d4a;
 
   /* Borders */
   --border: rgba(0, 0, 0, 0.06);
@@ -504,30 +504,6 @@ button, a, input, textarea {
   background: var(--sidebar-hover);
 }
 
-/* === C1 GENERATIVE UI === */
-.c1-response-wrapper {
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--chat-assistant-text);
-}
-
-.c1-response-wrapper * {
-  max-width: 100%;
-  overflow-wrap: break-word;
-}
-
-/* Ensure C1 tables don't overflow on mobile */
-.c1-response-wrapper table {
-  display: block;
-  overflow-x: auto;
-  max-width: 100%;
-  font-size: 14px;
-}
-
-[data-theme="dark"] .c1-response-wrapper {
-  color: var(--chat-assistant-text);
-}
-
 /* === LLM INPUT BUBBLE === */
 .llm-bubble {
   background: rgba(0, 0, 0, 0.04) !important;
@@ -559,6 +535,9 @@ button, a, input, textarea {
   border-width: 0 !important;
   outline: none !important;
   box-shadow: none !important;
+  caret-color: var(--text-primary);
+  font-size: 15px !important;
+  line-height: 1.5 !important;
 }
 
 .llm-bubble:focus-within {

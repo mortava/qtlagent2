@@ -13,11 +13,11 @@ interface SidebarProps {
 }
 
 const quickLinks = [
-  { label: 'AI Bank Statement Review', url: 'https://tqlpartner.totalqualitylending.com' },
-  { label: 'Quick Price', url: 'https://ob-pricing-app-1094393703267.us-central1.run.app/' },
-  { label: 'Submit Loan Now', url: 'https://tqlpartner.totalqualitylending.com' },
-  { label: 'Order Appraisal', url: 'https://tqlpartner.totalqualitylending.com' },
-  { label: 'Get Approved', url: 'https://tqlpartner.totalqualitylending.com' },
+  { label: 'AI Bank Statement Review', url: 'https://veriqualv1.qualr.com/auth' },
+  { label: 'Price a Loan', url: 'https://ob-pricing-app-1094393703267.us-central1.run.app/' },
+  { label: 'Submit Loan Now', url: 'https://broker-frontend-1094393703267.us-central1.run.app/' },
+  { label: 'Order Appraisal', url: 'https://tqlpartner.totalqualitylending.com/' },
+  { label: 'Get Approved Today', url: 'https://tqlpartner.totalqualitylending.com/forms#broker-application' },
   { label: 'GET HELP', url: 'https://tqlpartner.totalqualitylending.com' },
 ]
 
