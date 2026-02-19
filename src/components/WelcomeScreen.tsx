@@ -73,12 +73,12 @@ export default function WelcomeScreen({
             fontFamily: 'var(--font-poppins)',
             fontSize: '72px',
             fontWeight: 700,
-            color: 'var(--foreground)',
             lineHeight: 1,
             letterSpacing: '0.04em',
           }}
         >
-          Get FIT
+          <span style={{ color: 'var(--foreground)' }}>GET </span>
+          <span style={{ color: '#2563eb' }}>FIT</span>
         </span>
       </div>
 
