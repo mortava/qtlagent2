@@ -239,18 +239,37 @@ export default function App() {
             </button>
           )}
 
-          {/* FIT text + title */}
-          <div className="flex items-center gap-2.5">
-            <span
-              style={{
-                fontFamily: 'var(--font-poppins)',
-                fontSize: '22px',
-                fontWeight: 600,
-                color: 'var(--foreground)',
-              }}
-            >
-              FIT
-            </span>
+          {/* TQL icon + Powered by + FIT text */}
+          <div className="flex items-center gap-3">
+            <img
+              src="https://tqlpartner.totalqualitylending.com/favicon.png"
+              alt="TQL"
+              style={{ width: '24px', height: '24px', borderRadius: '3px' }}
+            />
+            <div className="flex flex-col" style={{ lineHeight: 1.1 }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-poppins)',
+                  fontSize: '10px',
+                  fontWeight: 500,
+                  color: 'var(--text-secondary)',
+                  letterSpacing: '0.01em',
+                }}
+              >
+                Powered by Total Quality Lending
+              </span>
+              <span
+                style={{
+                  fontFamily: 'var(--font-poppins)',
+                  fontSize: '20px',
+                  fontWeight: 700,
+                  color: 'var(--foreground)',
+                  letterSpacing: '0.03em',
+                }}
+              >
+                FIT
+              </span>
+            </div>
             {activeConversation?.title && activeConversation.title !== 'New Chat' && (
               <span
                 className="truncate"

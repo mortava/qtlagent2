@@ -7,9 +7,9 @@
 @import '@fontsource/geist-mono/500.css';
 
 :root {
-  /* Core palette — minimal black/white/gray */
+  /* Core palette — Navy Blue headers, neutral chat text */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1e3a5f;
   --font-poppins: 'Poppins', sans-serif;
 
   /* Backgrounds */

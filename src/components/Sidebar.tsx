@@ -81,31 +81,14 @@ export default function Sidebar({
           willChange: 'transform',
         }}
       >
-        {/* Header — TQL icon + Powered by + close button */}
+        {/* Header — FIT branding + close button */}
         <div
           className="flex items-center justify-between"
           style={{
             padding: '12px 16px 0',
           }}
         >
-          <div className="flex items-center gap-2">
-            <img
-              src="https://tqlpartner.totalqualitylending.com/favicon.png"
-              alt="TQL"
-              style={{ width: '20px', height: '20px', borderRadius: '3px' }}
-            />
-            <span
-              style={{
-                fontFamily: 'var(--font-poppins)',
-                fontSize: '11px',
-                fontWeight: 500,
-                color: 'var(--sidebar-text)',
-                letterSpacing: '0.01em',
-              }}
-            >
-              Powered by Total Quality Lending
-            </span>
-          </div>
+          <div />
           <button
             onClick={onToggle}
             className="flex items-center justify-center cursor-pointer"
