@@ -81,24 +81,31 @@ export default function Sidebar({
           willChange: 'transform',
         }}
       >
-        {/* Header — Q branding + close button */}
+        {/* Header — TQL icon + Powered by + close button */}
         <div
           className="flex items-center justify-between"
           style={{
-            height: '52px',
-            padding: '0 16px',
+            padding: '12px 16px 0',
           }}
         >
-          <span
-            style={{
-              fontFamily: 'var(--font-poppins)',
-              fontSize: '20px',
-              fontWeight: 600,
-              color: 'var(--foreground)',
-            }}
-          >
-            Q
-          </span>
+          <div className="flex items-center gap-2">
+            <img
+              src="https://tqlpartner.totalqualitylending.com/favicon.png"
+              alt="TQL"
+              style={{ width: '20px', height: '20px', borderRadius: '3px' }}
+            />
+            <span
+              style={{
+                fontFamily: 'var(--font-poppins)',
+                fontSize: '11px',
+                fontWeight: 500,
+                color: 'var(--sidebar-text)',
+                letterSpacing: '0.01em',
+              }}
+            >
+              Powered by Total Quality Lending
+            </span>
+          </div>
           <button
             onClick={onToggle}
             className="flex items-center justify-center cursor-pointer"
@@ -123,6 +130,36 @@ export default function Sidebar({
           >
             <ChevronLeft size={16} />
           </button>
+        </div>
+
+        {/* FIT Branding + Tagline */}
+        <div style={{ padding: '8px 16px 12px' }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-poppins)',
+              fontSize: '28px',
+              fontWeight: 700,
+              color: 'var(--foreground)',
+              letterSpacing: '0.04em',
+              display: 'block',
+              lineHeight: 1.1,
+            }}
+          >
+            FIT
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--font-poppins)',
+              fontSize: '11px',
+              fontWeight: 500,
+              color: 'var(--text-secondary)',
+              letterSpacing: '0.02em',
+              display: 'block',
+              marginTop: '2px',
+            }}
+          >
+            Faith. Integrity. Thrive.
+          </span>
         </div>
 
         {/* New Chat Button */}
@@ -267,23 +304,14 @@ export default function Sidebar({
         <div
           style={{
             borderTop: '1px solid var(--sidebar-divider)',
-            padding: '12px 16px',
+            padding: '10px 16px',
           }}
         >
-          <div
-            style={{
-              fontSize: '11px',
-              color: 'var(--sidebar-text)',
-            }}
-          >
-            Powered by Total Quality Lending
-          </div>
           <div
             style={{
               fontSize: '10px',
               color: 'var(--sidebar-text)',
               opacity: 0.6,
-              marginTop: '2px',
             }}
           >
             NMLS #1933377

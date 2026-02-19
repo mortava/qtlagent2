@@ -18,7 +18,7 @@ export default async function handler(req: any, res: any) {
   }
 
   const chatMessages = [
-    { role: 'system', content: systemPrompt || 'You are Q, an AI assistant.' },
+    { role: 'system', content: systemPrompt || 'You are FIT, an AI assistant for Total Quality Lending.' },
     ...messages.map((m: { role: string; content: string }) => ({
       role: m.role,
       content: m.content,

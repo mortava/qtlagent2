@@ -63,21 +63,34 @@ export default function WelcomeScreen({
       className="flex-1 flex flex-col items-center justify-center px-6"
       style={{ background: 'var(--bg-chat)' }}
     >
-      {/* Centered Q Lettermark */}
+      {/* Centered FIT Lettermark */}
       <div
-        className="flex items-center justify-center"
+        className="flex flex-col items-center justify-center"
         style={{ marginBottom: '24px' }}
       >
         <span
           style={{
             fontFamily: 'var(--font-poppins)',
             fontSize: '72px',
-            fontWeight: 600,
+            fontWeight: 700,
             color: 'var(--foreground)',
             lineHeight: 1,
+            letterSpacing: '0.04em',
           }}
         >
-          Q
+          FIT
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-poppins)',
+            fontSize: '14px',
+            fontWeight: 500,
+            color: 'var(--text-secondary)',
+            marginTop: '6px',
+            letterSpacing: '0.02em',
+          }}
+        >
+          Faith. Integrity. Thrive.
         </span>
       </div>
 
@@ -124,7 +137,7 @@ export default function WelcomeScreen({
               adjustHeight()
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Ask Q anything about TQL loan products..."
+            placeholder="Ask FIT anything about TQL loan products..."
             rows={1}
             className="flex-1 bg-transparent outline-none resize-none"
             style={{
@@ -173,7 +186,7 @@ export default function WelcomeScreen({
             color: 'var(--text-quaternary)',
           }}
         >
-          Q is an AI assistant. Verify important guideline details with your TQL Account Executive.
+          FIT is an AI assistant. Verify important guideline details with your TQL Account Executive.
         </p>
       </div>
     </div>

@@ -72,7 +72,7 @@ export default function ChatInput({
               adjustHeight()
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Ask Q anything about TQL loan products..."
+            placeholder="Ask FIT anything about TQL loan products..."
             disabled={disabled}
             rows={1}
             className="flex-1 bg-transparent outline-none resize-none"
@@ -149,7 +149,7 @@ export default function ChatInput({
             color: 'var(--text-quaternary)',
           }}
         >
-          Q is an AI assistant. Verify important guideline details with your TQL Account Executive.
+          FIT is an AI assistant. Verify important guideline details with your TQL Account Executive.
         </p>
       </div>
     </div>

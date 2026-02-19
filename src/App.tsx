@@ -239,7 +239,7 @@ export default function App() {
             </button>
           )}
 
-          {/* Q text + title */}
+          {/* FIT text + title */}
           <div className="flex items-center gap-2.5">
             <span
               style={{
@@ -249,7 +249,7 @@ export default function App() {
                 color: 'var(--foreground)',
               }}
             >
-              Q
+              FIT
             </span>
             {activeConversation?.title && activeConversation.title !== 'New Chat' && (
               <span
