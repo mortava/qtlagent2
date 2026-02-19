@@ -43,8 +43,10 @@ export default async function handler(req: any, res: any) {
 
     if (!response.ok) {
       const errorText = await response.text()
+      const systemPromptLen = (systemPrompt || '').length
       console.error('Groq API error:', response.status, errorText)
-      return res.status(response.status).json({ error: `Groq API error: ${response.status}` })
+      console.error('System prompt length:', systemPromptLen, 'chars, ~', Math.round(systemPromptLen / 4), 'tokens')
+      return res.status(response.status).json({ error: `Groq API error: ${response.status}`, details: errorText })
     }
 
     res.setHeader('Content-Type', 'text/event-stream')

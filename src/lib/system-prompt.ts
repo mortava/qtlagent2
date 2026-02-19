@@ -126,20 +126,15 @@ ${operationalHighlights}
 
 ---
 
-## PROGRAM MATRICES (Agent Lightning Training Data)
+## PROGRAM MATRICES QUICK REFERENCE
 
-${programsRef}
-
----
-
-## DETAILED GUIDELINES REFERENCE
-
-${knowledgeBase.map((entry) => `### ${entry.title}\n${entry.content}`).join('\n\n')}`
+${programsRef}`
 }
 
 /**
  * Build a RAG-enhanced system prompt by injecting context relevant to the user's query.
  * Uses Agent Lightning keyword-indexed search for fast retrieval.
+ * Only injects the most relevant entries — NOT the entire knowledge base.
  */
 export function buildRAGSystemPrompt(userQuery: string): string {
   const basePrompt = buildSystemPrompt()
@@ -152,18 +147,17 @@ export function buildRAGSystemPrompt(userQuery: string): string {
   }
 
   const ragContext = relevantEntries
-    .map((entry, i) => `${i + 1}. ${entry.title}: ${entry.content}`)
-    .join('\n\n')
+    .map((entry) => `### ${entry.title}\n${entry.content}`)
+    .join('\n\n---\n\n')
 
   return `${basePrompt}
 
 ---
 
-## RAG CONTEXT (Retrieved for this specific query)
-The following guidelines are most relevant to the user's current question:
+## DETAILED GUIDELINES (Retrieved via RAG for this query)
 
 ${ragContext}
 
 ---
-Answer using ONLY the information above. Cite exact numbers.`
+Answer using ONLY the information above. Always use a Markdown table when matrix data is present. Cite exact numbers and source.`
 }
