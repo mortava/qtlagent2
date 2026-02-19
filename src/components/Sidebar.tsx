@@ -115,7 +115,7 @@ export default function Sidebar({
           </button>
         </div>
 
-        {/* FIT Branding + Tagline */}
+        {/* FIT Branding */}
         <div style={{ padding: '8px 16px 12px' }}>
           <span
             style={{
@@ -129,19 +129,6 @@ export default function Sidebar({
             }}
           >
             FIT
-          </span>
-          <span
-            style={{
-              fontFamily: 'var(--font-poppins)',
-              fontSize: '11px',
-              fontWeight: 500,
-              color: 'var(--text-secondary)',
-              letterSpacing: '0.02em',
-              display: 'block',
-              marginTop: '2px',
-            }}
-          >
-            Faith. Integrity. Thrive.
           </span>
         </div>
 
