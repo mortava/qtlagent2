@@ -63,7 +63,7 @@ export default function WelcomeScreen({
       className="flex-1 flex flex-col items-center justify-center px-6"
       style={{ background: 'var(--bg-chat)' }}
     >
-      {/* Centered FIT Lettermark */}
+      {/* Centered Get FIT Lettermark */}
       <div
         className="flex flex-col items-center justify-center"
         style={{ marginBottom: '24px' }}
@@ -78,7 +78,7 @@ export default function WelcomeScreen({
             letterSpacing: '0.04em',
           }}
         >
-          FIT
+          Get FIT
         </span>
         <span
           style={{
