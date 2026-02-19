@@ -80,18 +80,6 @@ export default function WelcomeScreen({
         >
           Get FIT
         </span>
-        <span
-          style={{
-            fontFamily: 'var(--font-poppins)',
-            fontSize: '14px',
-            fontWeight: 500,
-            color: 'var(--text-secondary)',
-            marginTop: '6px',
-            letterSpacing: '0.02em',
-          }}
-        >
-          Faith. Integrity. Thrive.
-        </span>
       </div>
 
       {/* Rotating sample question */}

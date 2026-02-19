@@ -1,4 +1,5 @@
-import { Plus, MessageSquare, Trash2, ChevronLeft, ExternalLink } from 'lucide-react'
+import { useState } from 'react'
+import { Plus, MessageSquare, Trash2, ChevronLeft, ChevronDown, ChevronRight, ExternalLink } from 'lucide-react'
 import { useEffect } from 'react'
 import type { Conversation } from '../lib/store'
 
@@ -30,6 +31,8 @@ export default function Sidebar({
   onSelectConversation,
   onDeleteConversation,
 }: SidebarProps) {
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({})
+
   // Close sidebar on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -62,6 +65,19 @@ export default function Sidebar({
     grouped[label].push(c)
   }
 
+  // Default "Today" to expanded, others collapsed
+  const isSectionExpanded = (label: string) => {
+    if (label in expandedSections) return expandedSections[label]
+    return label === 'Today'
+  }
+
+  const toggleSection = (label: string) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [label]: !isSectionExpanded(label),
+    }))
+  }
+
   if (!isOpen) return null
 
   return (
@@ -81,12 +97,10 @@ export default function Sidebar({
           willChange: 'transform',
         }}
       >
-        {/* Header — FIT branding + close button */}
+        {/* Header — close button */}
         <div
           className="flex items-center justify-between"
-          style={{
-            padding: '12px 16px 0',
-          }}
+          style={{ padding: '8px 16px 0' }}
         >
           <div />
           <button
@@ -115,8 +129,8 @@ export default function Sidebar({
           </button>
         </div>
 
-        {/* FIT Branding + Tagline — centered */}
-        <div style={{ padding: '8px 16px 12px', textAlign: 'center' }}>
+        {/* FIT Branding + Tagline — tighter spacing */}
+        <div style={{ padding: '2px 16px 8px', textAlign: 'center' }}>
           <span
             style={{
               fontFamily: 'var(--font-poppins)',
@@ -138,7 +152,7 @@ export default function Sidebar({
               color: 'var(--text-secondary)',
               letterSpacing: '0.02em',
               display: 'block',
-              marginTop: '4px',
+              marginTop: '2px',
             }}
           >
             Faith. Integrity. Thrive.
@@ -146,12 +160,12 @@ export default function Sidebar({
         </div>
 
         {/* New Chat Button */}
-        <div style={{ padding: '0 12px', marginBottom: '12px' }}>
+        <div style={{ padding: '0 12px', marginBottom: '8px' }}>
           <button
             onClick={onNewChat}
             className="w-full flex items-center justify-center cursor-pointer"
             style={{
-              height: '40px',
+              height: '38px',
               background: 'transparent',
               border: '1px solid var(--sidebar-divider)',
               borderRadius: 'var(--radius-md)',
@@ -179,91 +193,122 @@ export default function Sidebar({
           style={{
             height: '1px',
             background: 'var(--sidebar-divider)',
-            margin: '0 12px 8px 12px',
+            margin: '0 12px 4px 12px',
           }}
         />
 
-        {/* Chat History */}
+        {/* Chat History — collapsible sections */}
         <div className="flex-1 overflow-y-auto chat-scroll">
-          {Object.entries(grouped).map(([dateLabel, convos]) => (
-            <div key={dateLabel}>
-              <div
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  color: 'var(--sidebar-text)',
-                  padding: '8px 16px 6px 16px',
-                }}
-              >
-                {dateLabel}
-              </div>
-              {convos.map((c) => {
-                const isActive = c.id === activeId
-                return (
-                  <div
-                    key={c.id}
-                    className="group flex items-center cursor-pointer"
+          {Object.entries(grouped).map(([dateLabel, convos]) => {
+            const expanded = isSectionExpanded(dateLabel)
+            return (
+              <div key={dateLabel}>
+                <button
+                  onClick={() => toggleSection(dateLabel)}
+                  className="w-full flex items-center cursor-pointer"
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: 'var(--sidebar-text)',
+                    padding: '6px 16px 4px 12px',
+                    background: 'transparent',
+                    border: 'none',
+                    gap: '4px',
+                    transition: 'color 0.15s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--foreground)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--sidebar-text)'
+                  }}
+                >
+                  {expanded ? (
+                    <ChevronDown size={12} style={{ opacity: 0.6 }} />
+                  ) : (
+                    <ChevronRight size={12} style={{ opacity: 0.6 }} />
+                  )}
+                  {dateLabel}
+                  <span
                     style={{
-                      padding: '7px 12px',
-                      margin: '1px 8px',
-                      borderRadius: 'var(--radius-sm)',
-                      fontSize: '13px',
-                      color: isActive ? 'var(--foreground)' : 'var(--sidebar-text-hover)',
-                      background: isActive ? 'var(--sidebar-active)' : 'transparent',
-                      fontWeight: isActive ? 500 : 400,
-                      transition: 'background 0.15s, color 0.15s',
-                    }}
-                    onClick={() => onSelectConversation(c.id)}
-                    onMouseEnter={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.background = 'var(--sidebar-hover)'
-                        e.currentTarget.style.color = 'var(--foreground)'
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.background = 'transparent'
-                        e.currentTarget.style.color = 'var(--sidebar-text-hover)'
-                      }
+                      fontSize: '10px',
+                      fontWeight: 400,
+                      opacity: 0.5,
+                      marginLeft: '4px',
                     }}
                   >
-                    <MessageSquare
-                      size={14}
-                      className="shrink-0"
-                      style={{ color: 'var(--sidebar-text)', marginRight: '8px' }}
-                    />
-                    <span className="flex-1 truncate">{c.title}</span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onDeleteConversation(c.id)
-                      }}
-                      className="opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer"
-                      style={{
-                        padding: '4px',
-                        borderRadius: 'var(--radius-xs)',
-                        color: 'var(--sidebar-text)',
-                        background: 'transparent',
-                        border: 'none',
-                        transition: 'opacity 0.15s, color 0.15s',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = '#ef4444'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = 'var(--sidebar-text)'
-                      }}
-                      title="Delete conversation"
-                    >
-                      <Trash2 size={12} />
-                    </button>
-                  </div>
-                )
-              })}
-            </div>
-          ))}
+                    ({convos.length})
+                  </span>
+                </button>
+                {expanded &&
+                  convos.map((c) => {
+                    const isActive = c.id === activeId
+                    return (
+                      <div
+                        key={c.id}
+                        className="group flex items-center cursor-pointer"
+                        style={{
+                          padding: '7px 12px',
+                          margin: '1px 8px',
+                          borderRadius: 'var(--radius-sm)',
+                          fontSize: '13px',
+                          color: isActive ? 'var(--foreground)' : 'var(--sidebar-text-hover)',
+                          background: isActive ? 'var(--sidebar-active)' : 'transparent',
+                          fontWeight: isActive ? 500 : 400,
+                          transition: 'background 0.15s, color 0.15s',
+                        }}
+                        onClick={() => onSelectConversation(c.id)}
+                        onMouseEnter={(e) => {
+                          if (!isActive) {
+                            e.currentTarget.style.background = 'var(--sidebar-hover)'
+                            e.currentTarget.style.color = 'var(--foreground)'
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isActive) {
+                            e.currentTarget.style.background = 'transparent'
+                            e.currentTarget.style.color = 'var(--sidebar-text-hover)'
+                          }
+                        }}
+                      >
+                        <MessageSquare
+                          size={14}
+                          className="shrink-0"
+                          style={{ color: 'var(--sidebar-text)', marginRight: '8px' }}
+                        />
+                        <span className="flex-1 truncate">{c.title}</span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onDeleteConversation(c.id)
+                          }}
+                          className="opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer"
+                          style={{
+                            padding: '4px',
+                            borderRadius: 'var(--radius-xs)',
+                            color: 'var(--sidebar-text)',
+                            background: 'transparent',
+                            border: 'none',
+                            transition: 'opacity 0.15s, color 0.15s',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = '#ef4444'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = 'var(--sidebar-text)'
+                          }}
+                          title="Delete conversation"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    )
+                  })}
+              </div>
+            )
+          })}
         </div>
 
         {/* Quick Links */}
