@@ -81,8 +81,9 @@ export default function ChatInput({
               lineHeight: '1.5',
               color: 'var(--text-primary)',
               fontFamily: 'var(--font-sans)',
-              minHeight: '24px',
+              minHeight: '36px',
               maxHeight: '180px',
+              padding: '6px 0',
             }}
           />
           {isStreaming ? (
