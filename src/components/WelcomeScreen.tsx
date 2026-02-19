@@ -60,7 +60,7 @@ export default function WelcomeScreen({
 
   return (
     <div
-      className="flex-1 flex flex-col items-center justify-center px-6"
+      className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6"
       style={{ background: 'var(--bg-chat)' }}
     >
       {/* Centered Get FIT Lettermark */}
@@ -69,6 +69,7 @@ export default function WelcomeScreen({
         style={{ marginBottom: '24px' }}
       >
         <span
+          className="welcome-hero"
           style={{
             fontFamily: 'var(--font-poppins)',
             fontSize: '72px',
@@ -111,8 +112,8 @@ export default function WelcomeScreen({
         </button>
       </div>
 
-      {/* Centered Input Box — no border */}
-      <div style={{ width: '100%', maxWidth: '680px' }}>
+      {/* Centered Input Box */}
+      <div style={{ width: '100%', maxWidth: '680px', padding: '0 2px' }}>
         <div
           className="flex items-end llm-bubble"
           style={{ gap: '8px' }}

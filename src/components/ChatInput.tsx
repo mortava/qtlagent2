@@ -49,7 +49,7 @@ export default function ChatInput({
 
   return (
     <div
-      className="shrink-0 relative"
+      className="shrink-0 relative chat-input-wrapper"
       style={{
         background: 'var(--background)',
         borderTop: '1px solid var(--border)',

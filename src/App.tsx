@@ -70,13 +70,20 @@ export default function App() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) setSidebarOpen(false)
-      else setSidebarOpen(true)
+      if (window.innerWidth < 768) {
+        setSidebarOpen(false)
+        // Force system theme on mobile
+        if (theme !== 'system') {
+          setTheme('system')
+        }
+      } else {
+        setSidebarOpen(true)
+      }
     }
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleNewChat = () => {
     const newConvo = createConversation()
@@ -197,14 +204,17 @@ export default function App() {
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
         onNewChat={handleNewChat}
-        onSelectConversation={setActiveId}
+        onSelectConversation={(id) => {
+          setActiveId(id)
+          if (window.innerWidth < 768) setSidebarOpen(false)
+        }}
         onDeleteConversation={handleDeleteConversation}
       />
 
       <div className="flex-1 flex flex-col min-w-0 h-full">
         {/* Header */}
         <div
-          className="flex items-center shrink-0"
+          className="flex items-center shrink-0 mobile-header"
           style={{
             height: '52px',
             padding: '0 20px',
@@ -239,27 +249,42 @@ export default function App() {
             </button>
           )}
 
-          {/* TQL icon + Powered by + FIT text */}
-          <div className="flex items-center gap-3">
+          {/* TQL icon + Powered by */}
+          <div className="flex items-center gap-2 min-w-0">
             <img
               src="https://tqlpartner.totalqualitylending.com/favicon.png"
               alt="TQL"
+              className="shrink-0"
               style={{ width: '24px', height: '24px', borderRadius: '3px' }}
             />
             <span
+              className="hidden sm:inline"
               style={{
                 fontFamily: 'var(--font-poppins)',
                 fontSize: '12px',
                 fontWeight: 500,
                 color: 'var(--text-secondary)',
                 letterSpacing: '0.01em',
+                whiteSpace: 'nowrap',
               }}
             >
               Powered by Total Quality Lending
             </span>
+            <span
+              className="sm:hidden"
+              style={{
+                fontFamily: 'var(--font-poppins)',
+                fontSize: '11px',
+                fontWeight: 500,
+                color: 'var(--text-secondary)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Total Quality Lending
+            </span>
             {activeConversation?.title && activeConversation.title !== 'New Chat' && (
               <span
-                className="truncate"
+                className="truncate hidden sm:inline"
                 style={{
                   fontSize: '14px',
                   fontWeight: 500,
@@ -317,7 +342,7 @@ export default function App() {
               }}
             >
               <div
-                className="mx-auto"
+                className="mx-auto chat-messages-container"
                 style={{ maxWidth: '720px', padding: '32px 24px 24px' }}
               >
                 {activeConversation.messages.map((msg, i) => (

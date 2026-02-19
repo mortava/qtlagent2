@@ -553,3 +553,65 @@ textarea:focus::placeholder {
 textarea::placeholder {
   transition: opacity 0.15s ease;
 }
+
+/* === MOBILE OPTIMIZATIONS === */
+@media (max-width: 767px) {
+  /* Hide theme switcher on mobile — defaults to system */
+  .theme-switcher {
+    display: none !important;
+  }
+
+  /* Tighter header */
+  .mobile-header {
+    height: 46px !important;
+    padding: 0 12px !important;
+  }
+
+  /* Input bubble — tighter on mobile */
+  .llm-bubble {
+    border-radius: 20px !important;
+    padding: 10px 12px 10px 16px !important;
+  }
+
+  /* Chat messages — less padding */
+  .chat-messages-container {
+    padding: 20px 14px 16px !important;
+  }
+
+  /* Chat input wrapper — less padding */
+  .chat-input-wrapper {
+    padding: 10px 12px 14px !important;
+  }
+
+  /* Welcome hero text smaller on mobile */
+  .welcome-hero {
+    font-size: 48px !important;
+  }
+
+  /* Tables scroll horizontally on mobile */
+  .markdown-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Code blocks smaller text on mobile */
+  .markdown-content pre {
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+}
+
+/* Safe area for iOS notch/home indicator */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .chat-input-wrapper {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Prevent iOS zoom on input focus (font-size must be >= 16px) */
+@media (max-width: 767px) {
+  .llm-bubble textarea {
+    font-size: 16px !important;
+  }
+}
