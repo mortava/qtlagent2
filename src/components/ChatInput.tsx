@@ -38,8 +38,8 @@ export default function ChatInput({
   const adjustHeight = () => {
     const el = textareaRef.current
     if (!el) return
-    el.style.height = 'auto'
-    el.style.height = Math.min(el.scrollHeight, 180) + 'px'
+    el.style.height = '0'
+    el.style.height = Math.max(40, Math.min(el.scrollHeight, 180)) + 'px'
   }
 
   const hasText = value.trim().length > 0
@@ -74,16 +74,15 @@ export default function ChatInput({
             onKeyDown={handleKeyDown}
             placeholder="Ask FIT anything about TQL loan products..."
             disabled={disabled}
-            rows={1}
             className="flex-1 bg-transparent outline-none resize-none"
             style={{
               fontSize: '15px',
               lineHeight: '1.5',
               color: 'var(--text-primary)',
               fontFamily: 'var(--font-sans)',
-              minHeight: '36px',
+              height: '40px',
               maxHeight: '180px',
-              padding: '6px 0',
+              padding: '8px 0',
             }}
           />
           {isStreaming ? (

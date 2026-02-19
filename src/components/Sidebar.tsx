@@ -184,7 +184,7 @@ export default function Sidebar({
             }}
           >
             <Plus size={14} />
-            Start a Fresh Qual +
+            Start Fresh
           </button>
         </div>
 
