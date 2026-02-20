@@ -129,15 +129,18 @@ export default function Sidebar({
           </button>
         </div>
 
-        {/* FIT Branding + Tagline — tighter spacing */}
+        {/* FIT Branding + Tagline */}
         <div style={{ padding: '2px 16px 8px', textAlign: 'center' }}>
           <span
             style={{
               fontFamily: 'var(--font-poppins)',
-              fontSize: '28px',
+              fontSize: '42px',
               fontWeight: 700,
-              color: 'var(--foreground)',
-              letterSpacing: '0.04em',
+              background: 'linear-gradient(135deg, #1e3a5f 0%, #3b82f6 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              letterSpacing: '0.06em',
               display: 'block',
               lineHeight: 1.1,
             }}
