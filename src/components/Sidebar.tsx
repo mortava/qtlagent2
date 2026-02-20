@@ -100,7 +100,7 @@ export default function Sidebar({
         {/* Header — close button */}
         <div
           className="flex items-center justify-between"
-          style={{ padding: '8px 16px 0' }}
+          style={{ padding: '6px 16px 0' }}
         >
           <div />
           <button
@@ -130,7 +130,7 @@ export default function Sidebar({
         </div>
 
         {/* FIT Branding + Tagline */}
-        <div style={{ padding: '2px 16px 8px', textAlign: 'center' }}>
+        <div style={{ padding: '0 16px 6px', textAlign: 'center' }}>
           <span
             style={{
               fontFamily: 'var(--font-poppins)',
@@ -152,13 +152,13 @@ export default function Sidebar({
               fontFamily: 'var(--font-poppins)',
               fontSize: '11px',
               fontWeight: 500,
-              color: 'var(--text-secondary)',
+              color: '#0a0a0a',
               letterSpacing: '0.02em',
               display: 'block',
               marginTop: '2px',
             }}
           >
-            Faith. Integrity. Thrive.
+            Faith. Integrity. Trust.
           </span>
         </div>
 
