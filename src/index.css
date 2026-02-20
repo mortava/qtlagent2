@@ -7,9 +7,9 @@
 @import '@fontsource/geist-mono/500.css';
 
 :root {
-  /* Core palette — Navy Blue headers, neutral chat text */
+  /* Core palette — Black accent headers, neutral chat text */
   --background: #ffffff;
-  --foreground: #1e3a5f;
+  --foreground: #0a0a0a;
   --font-poppins: 'Poppins', sans-serif;
 
   /* Backgrounds */
@@ -40,9 +40,9 @@
   --sidebar-text-hover: rgba(15, 15, 15, 0.8);
   --sidebar-divider: rgba(128, 128, 128, 0.2);
 
-  /* Interactive — Navy Blue accent */
-  --interactive-accent: #1e3a5f;
-  --interactive-accent-hover: #162d4a;
+  /* Interactive — Black accent */
+  --interactive-accent: #0a0a0a;
+  --interactive-accent-hover: #1a1a1a;
 
   /* Borders */
   --border: rgba(0, 0, 0, 0.06);

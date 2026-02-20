@@ -136,7 +136,7 @@ export default function Sidebar({
               fontFamily: 'var(--font-poppins)',
               fontSize: '42px',
               fontWeight: 700,
-              background: 'linear-gradient(135deg, #1e3a5f 0%, #3b82f6 100%)',
+              background: 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
