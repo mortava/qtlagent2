@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { Menu, Sun, Monitor, Moon } from 'lucide-react'
+import { Menu, PenLine } from 'lucide-react'
 import Sidebar from './components/Sidebar'
 import WelcomeScreen from './components/WelcomeScreen'
 import ChatMessage from './components/ChatMessage'
 import ChatInput from './components/ChatInput'
+import FinnMark from './components/FinnMark'
 import {
   type Conversation,
   loadConversations,
@@ -14,7 +15,7 @@ import {
 } from './lib/store'
 import { streamChat } from './lib/api'
 
-type Theme = 'light' | 'system' | 'dark'
+export type Theme = 'light' | 'system' | 'dark'
 
 function getInitialTheme(): Theme {
   const stored = localStorage.getItem('q-theme')
@@ -24,13 +25,9 @@ function getInitialTheme(): Theme {
 
 function applyTheme(theme: Theme) {
   const root = document.documentElement
-  if (theme === 'light') {
-    root.setAttribute('data-theme', 'light')
-  } else if (theme === 'dark') {
-    root.setAttribute('data-theme', 'dark')
-  } else {
-    root.removeAttribute('data-theme')
-  }
+  if (theme === 'light') root.setAttribute('data-theme', 'light')
+  else if (theme === 'dark') root.setAttribute('data-theme', 'dark')
+  else root.removeAttribute('data-theme')
 }
 
 export default function App() {
@@ -46,50 +43,39 @@ export default function App() {
   const streamContentRef = useRef('')
 
   const activeConversation = conversations.find((c) => c.id === activeId) || null
+  const hasMessages = !!activeConversation && activeConversation.messages.length > 0
 
-  // Theme management
   useEffect(() => {
     applyTheme(theme)
     localStorage.setItem('q-theme', theme)
   }, [theme])
 
   useEffect(() => {
-    const loaded = loadConversations()
-    setConversations(loaded)
+    setConversations(loadConversations())
   }, [])
 
   useEffect(() => {
-    if (conversations.length > 0) {
-      saveConversations(conversations)
-    }
+    if (conversations.length > 0) saveConversations(conversations)
   }, [conversations])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [activeConversation?.messages])
 
+  // Sidebar defaults: open on desktop, closed on mobile
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setSidebarOpen(false)
-        // Force system theme on mobile
-        if (theme !== 'system') {
-          setTheme('system')
-        }
-      } else {
-        setSidebarOpen(true)
-      }
-    }
+    const handleResize = () => setSidebarOpen(window.innerWidth >= 768)
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleNewChat = () => {
     const newConvo = createConversation()
     setConversations((prev) => [newConvo, ...prev])
     setActiveId(newConvo.id)
     setInput('')
+    if (window.innerWidth < 768) setSidebarOpen(false)
   }
 
   const handleSend = async (overrideText?: string) => {
@@ -120,9 +106,7 @@ export default function App() {
           messages: [...c.messages, userMsg, assistantMsg],
           updatedAt: Date.now(),
         }
-        if (c.messages.length === 0) {
-          updated.title = generateTitle(text)
-        }
+        if (c.messages.length === 0) updated.title = generateTitle(text)
         return updated
       })
     )
@@ -192,16 +176,14 @@ export default function App() {
     if (activeId === id) setActiveId(null)
   }
 
-  const handlePromptClick = (prompt: string) => {
-    handleSend(prompt)
-  }
-
   return (
-    <div className="h-full flex" style={{ background: 'var(--background)' }}>
+    <div className="app-shell flex" style={{ background: 'var(--canvas)' }}>
       <Sidebar
         conversations={conversations}
         activeId={activeId}
         isOpen={sidebarOpen}
+        theme={theme}
+        onSetTheme={setTheme}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
         onNewChat={handleNewChat}
         onSelectConversation={(id) => {
@@ -211,123 +193,90 @@ export default function App() {
         onDeleteConversation={handleDeleteConversation}
       />
 
-      <div className="flex-1 flex flex-col min-w-0 h-full">
+      <div className="flex-1 flex flex-col min-w-0" style={{ height: '100%' }}>
         {/* Header */}
-        <div
+        <header
           className="flex items-center shrink-0 mobile-header"
           style={{
-            height: '52px',
-            padding: '0 20px',
-            background: 'var(--background)',
+            height: '56px',
+            padding: '0 16px',
+            background: 'var(--glass)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             borderBottom: '1px solid var(--border)',
+            position: 'relative',
+            zIndex: 30,
           }}
         >
-          {/* Sidebar toggle */}
           {!sidebarOpen && (
             <button
               onClick={() => setSidebarOpen(true)}
-              className="flex items-center justify-center cursor-pointer mr-3"
+              className="flex items-center justify-center cursor-pointer shrink-0"
               style={{
-                width: '34px',
-                height: '34px',
+                width: '38px',
+                height: '38px',
                 borderRadius: 'var(--radius-sm)',
-                color: 'var(--text-secondary)',
+                color: 'var(--ink-2)',
                 background: 'transparent',
                 border: 'none',
+                marginRight: '6px',
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--bg-hover)'
-                e.currentTarget.style.color = 'var(--text-primary)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent'
-                e.currentTarget.style.color = 'var(--text-secondary)'
-              }}
-              title="Open sidebar"
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--bg-hover)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
+              aria-label="Open sidebar"
             >
-              <Menu size={18} />
+              <Menu size={19} />
             </button>
           )}
 
-          {/* TQL icon + Powered by */}
-          <div className="flex items-center gap-2 min-w-0">
-            <img
-              src="https://tqlpartner.totalqualitylending.com/favicon.png"
-              alt="TQL"
-              className="shrink-0"
-              style={{ width: '24px', height: '24px', borderRadius: '3px' }}
-            />
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            {!sidebarOpen && <FinnMark size={26} />}
             <span
-              className="hidden sm:inline"
+              className="truncate"
               style={{
-                fontFamily: 'var(--font-poppins)',
-                fontSize: '12px',
+                fontSize: '15px',
                 fontWeight: 500,
-                color: 'var(--text-secondary)',
-                letterSpacing: '0.01em',
-                whiteSpace: 'nowrap',
+                color: 'var(--ink-2)',
+                letterSpacing: '-0.01em',
               }}
             >
-              Powered by Total Quality Lending
+              {hasMessages && activeConversation?.title && activeConversation.title !== 'New Chat'
+                ? activeConversation.title
+                : 'FINN'}
             </span>
-            <span
-              className="sm:hidden"
-              style={{
-                fontFamily: 'var(--font-poppins)',
-                fontSize: '11px',
-                fontWeight: 500,
-                color: 'var(--text-secondary)',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Total Quality Lending
-            </span>
-            {activeConversation?.title && activeConversation.title !== 'New Chat' && (
-              <span
-                className="truncate hidden sm:inline"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: 'var(--text-secondary)',
-                  maxWidth: '300px',
-                }}
-              >
-                {activeConversation.title}
-              </span>
-            )}
           </div>
 
-        </div>
+          {/* New chat — quick access */}
+          <button
+            onClick={handleNewChat}
+            className="flex items-center justify-center cursor-pointer shrink-0"
+            style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: 'var(--radius-sm)',
+              color: 'var(--ink-2)',
+              background: 'transparent',
+              border: 'none',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--bg-hover)'
+              e.currentTarget.style.color = 'var(--accent)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = 'var(--ink-2)'
+            }}
+            aria-label="New chat"
+            title="New chat"
+          >
+            <PenLine size={18} />
+          </button>
+        </header>
 
-        {/* Theme Switcher — fixed top-right */}
-        <div className="theme-switcher">
-          <button
-            className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
-            onClick={() => setTheme('light')}
-            title="Light mode"
-          >
-            <Sun size={16} />
-          </button>
-          <button
-            className={`theme-btn ${theme === 'system' ? 'active' : ''}`}
-            onClick={() => setTheme('system')}
-            title="System preference"
-          >
-            <Monitor size={16} />
-          </button>
-          <button
-            className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
-            onClick={() => setTheme('dark')}
-            title="Dark mode"
-          >
-            <Moon size={16} />
-          </button>
-        </div>
-
-        {/* Chat Area */}
-        {!activeConversation || activeConversation.messages.length === 0 ? (
+        {/* Chat area */}
+        {!hasMessages ? (
           <WelcomeScreen
-            onPromptClick={handlePromptClick}
+            onPromptClick={(p) => handleSend(p)}
             inputValue={input}
             onInputChange={setInput}
             onSend={() => handleSend()}
@@ -336,22 +285,19 @@ export default function App() {
           <>
             <div
               className="flex-1 overflow-y-auto chat-scroll"
-              style={{
-                background: 'var(--bg-chat)',
-                scrollBehavior: 'smooth',
-              }}
+              style={{ background: 'var(--canvas)', scrollBehavior: 'smooth' }}
             >
               <div
                 className="mx-auto chat-messages-container"
-                style={{ maxWidth: '720px', padding: '32px 24px 24px' }}
+                style={{ maxWidth: '760px', padding: '36px 28px 28px' }}
               >
-                {activeConversation.messages.map((msg, i) => (
+                {activeConversation!.messages.map((msg, i) => (
                   <ChatMessage
                     key={msg.id}
                     message={msg}
                     isStreaming={
                       isStreaming &&
-                      i === activeConversation.messages.length - 1 &&
+                      i === activeConversation!.messages.length - 1 &&
                       msg.role === 'assistant'
                     }
                   />

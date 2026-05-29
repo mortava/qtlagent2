@@ -19,10 +19,9 @@ export default function ChatInput({
   disabled,
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const wrapperRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!isStreaming && textareaRef.current) {
+    if (!isStreaming && textareaRef.current && window.innerWidth >= 768) {
       textareaRef.current.focus()
     }
   }, [isStreaming])
@@ -44,112 +43,47 @@ export default function ChatInput({
 
   const hasText = value.trim().length > 0
 
-  const handleFocus = () => {}
-  const handleBlur = (_e: React.FocusEvent) => {}
-
   return (
     <div
       className="shrink-0 relative chat-input-wrapper"
       style={{
-        background: 'var(--background)',
-        borderTop: '1px solid var(--border)',
-        padding: '16px 24px 20px',
+        background: 'linear-gradient(to top, var(--canvas) 55%, transparent)',
+        padding: '12px 24px 18px',
       }}
     >
-      <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-        <div
-          ref={wrapperRef}
-          className="flex items-end llm-bubble"
-          style={{ gap: '8px' }}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        >
+      <div style={{ maxWidth: '720px', margin: '0 auto' }}>
+        <div className="flex items-end llm-bubble" style={{ gap: '8px' }}>
           <textarea
             ref={textareaRef}
             value={value}
-            onChange={(e) => {
-              onChange(e.target.value)
-              adjustHeight()
-            }}
+            onChange={(e) => { onChange(e.target.value); adjustHeight() }}
             onKeyDown={handleKeyDown}
-            placeholder="Ask FINN anything about TQL loan products..."
+            placeholder="Message FINN…"
             disabled={disabled}
             className="flex-1 bg-transparent outline-none resize-none"
             style={{
-              fontSize: '15px',
-              lineHeight: '1.5',
-              color: 'var(--text-primary)',
-              fontFamily: 'var(--font-sans)',
-              height: '40px',
-              maxHeight: '180px',
-              padding: '8px 0',
+              fontSize: '15.5px', lineHeight: '1.55', color: 'var(--ink)',
+              fontFamily: 'var(--font-sans)', height: '40px', maxHeight: '180px', padding: '8px 0',
             }}
           />
           {isStreaming ? (
-            <button
-              onClick={onStop}
-              className="shrink-0 flex items-center justify-center cursor-pointer"
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '10px',
-                background: '#ef4444',
-                border: 'none',
-                color: 'white',
-                transition: 'background 0.15s, transform 0.1s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#dc2626'
-                e.currentTarget.style.transform = 'scale(1.04)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#ef4444'
-                e.currentTarget.style.transform = 'scale(1)'
-              }}
-              title="Stop generating"
-            >
-              <Square size={14} fill="white" />
+            <button onClick={onStop} className="send-btn is-stop" aria-label="Stop generating" title="Stop">
+              <Square size={14} fill="currentColor" />
             </button>
           ) : (
             <button
               onClick={onSend}
               disabled={!hasText || disabled}
-              className="shrink-0 flex items-center justify-center disabled:cursor-not-allowed"
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '10px',
-                border: 'none',
-                background: hasText ? 'var(--interactive-accent)' : 'var(--bg-secondary)',
-                color: hasText ? 'var(--background)' : 'var(--text-quaternary)',
-                cursor: hasText ? 'pointer' : 'default',
-                transition: 'background 0.15s, color 0.15s, transform 0.1s',
-              }}
-              onMouseEnter={(e) => {
-                if (hasText) {
-                  e.currentTarget.style.background = 'var(--interactive-accent-hover)'
-                  e.currentTarget.style.transform = 'scale(1.04)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = hasText ? 'var(--interactive-accent)' : 'var(--bg-secondary)'
-                e.currentTarget.style.transform = 'scale(1)'
-              }}
-              title="Send message"
+              className={`send-btn ${hasText ? 'is-active' : 'is-idle'}`}
+              aria-label="Send message"
+              title="Send"
             >
-              <ArrowUp size={18} strokeWidth={2} />
+              <ArrowUp size={18} strokeWidth={2.2} />
             </button>
           )}
         </div>
-        <p
-          className="text-center"
-          style={{
-            marginTop: '10px',
-            fontSize: '11px',
-            color: 'var(--text-quaternary)',
-          }}
-        >
-          FINN is an AI assistant. Verify important guideline details with your TQL Account Executive.
+        <p className="text-center" style={{ marginTop: '9px', fontSize: '11px', color: 'var(--ink-4)' }}>
+          FINN can make mistakes. Verify guideline details with your TQL Account Executive.
         </p>
       </div>
     </div>

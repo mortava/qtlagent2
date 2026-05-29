@@ -2,6 +2,7 @@ import { Copy, Check } from 'lucide-react'
 import { useState } from 'react'
 import type { Message } from '../lib/store'
 import MarkdownRenderer from './MarkdownRenderer'
+import FinnMark from './FinnMark'
 
 interface ChatMessageProps {
   message: Message
@@ -21,17 +22,19 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
 
   if (isUser) {
     return (
-      <div className="flex justify-end message-enter" style={{ marginBottom: '20px' }}>
+      <div className="flex justify-end message-enter" style={{ marginBottom: '22px' }}>
         <div
           style={{
-            maxWidth: '72%',
+            maxWidth: '80%',
             background: 'var(--chat-user-bg)',
             color: 'var(--chat-user-text)',
-            borderRadius: '18px 18px 4px 18px',
-            padding: '12px 16px',
-            fontSize: '15px',
+            borderRadius: '20px 20px 6px 20px',
+            padding: '11px 16px',
+            fontSize: '15.5px',
             lineHeight: '1.55',
-            fontWeight: 400,
+            letterSpacing: '-0.003em',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
           }}
         >
           {message.content}
@@ -40,35 +43,15 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
     )
   }
 
-  // Thinking/loading state
+  // Thinking / loading state
   if (isStreaming && !message.content) {
     return (
-      <div className="flex items-start message-enter" style={{ gap: '12px', marginBottom: '24px' }}>
-        <div
-          className="flex items-center justify-center shrink-0"
-          style={{ width: '36px', height: '36px' }}
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-poppins)',
-              fontSize: '16px',
-              fontWeight: 700,
-              color: 'var(--foreground)',
-              letterSpacing: '0.02em',
-            }}
-          >
-            FINN
-          </span>
-        </div>
-        <div style={{ padding: '8px 0' }}>
-          <div className="flex items-center gap-1 h-5">
-            <div className="typing-dot" />
-            <div className="typing-dot" />
-            <div className="typing-dot" />
-          </div>
-          <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>
-            FINN is thinking...
-          </div>
+      <div className="flex items-start message-enter" style={{ gap: '12px', marginBottom: '26px' }}>
+        <FinnMark size={30} />
+        <div className="flex items-center" style={{ gap: '5px', height: '30px', paddingLeft: '2px' }}>
+          <div className="typing-dot" />
+          <div className="typing-dot" />
+          <div className="typing-dot" />
         </div>
       </div>
     )
@@ -77,61 +60,49 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
   return (
     <div
       className="flex items-start message-enter"
-      style={{ gap: '12px', marginBottom: '24px' }}
+      style={{ gap: '12px', marginBottom: '26px' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div
-        className="flex items-center justify-center shrink-0"
-        style={{ width: '36px', height: '36px' }}
-      >
-        <span
+      <FinnMark size={30} />
+
+      <div className="flex-1 min-w-0" style={{ maxWidth: 'calc(100% - 42px)' }}>
+        <div
           style={{
-            fontFamily: 'var(--font-poppins)',
-            fontSize: '16px',
-            fontWeight: 700,
-            color: 'var(--foreground)',
-            letterSpacing: '0.02em',
+            fontSize: '12px', fontWeight: 600, color: 'var(--ink-3)',
+            letterSpacing: '0.01em', marginBottom: '5px', marginTop: '6px',
           }}
         >
           FINN
-        </span>
-      </div>
-
-      <div className="flex-1 min-w-0 relative" style={{ maxWidth: 'calc(100% - 48px)' }}>
-        <div style={{ padding: '4px 0' }}>
-          <MarkdownRenderer content={message.content} isStreaming={isStreaming} />
         </div>
+        <MarkdownRenderer content={message.content} isStreaming={isStreaming} />
 
         {!isStreaming && message.content && (
-          <button
-            onClick={handleCopy}
-            className="flex items-center justify-center cursor-pointer"
+          <div
             style={{
-              position: 'absolute',
-              top: '4px',
-              right: '0px',
-              width: '28px',
-              height: '28px',
-              borderRadius: 'var(--radius-sm)',
-              background: 'transparent',
-              border: 'none',
-              color: copied ? '#22c55e' : 'var(--text-quaternary)',
+              marginTop: '8px',
               opacity: hovered ? 1 : 0,
-              transition: 'opacity 0.15s, background 0.15s, color 0.15s',
+              transition: 'opacity 0.2s ease',
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--bg-hover)'
-              if (!copied) e.currentTarget.style.color = 'var(--text-secondary)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent'
-              if (!copied) e.currentTarget.style.color = 'var(--text-quaternary)'
-            }}
-            title="Copy message"
           >
-            {copied ? <Check size={14} /> : <Copy size={14} />}
-          </button>
+            <button
+              onClick={handleCopy}
+              className="flex items-center justify-center cursor-pointer"
+              style={{
+                gap: '5px', height: '28px', padding: '0 9px',
+                borderRadius: 'var(--radius-sm)',
+                background: 'transparent', border: '1px solid var(--border)',
+                color: copied ? 'var(--accent)' : 'var(--ink-3)',
+                fontSize: '12px', fontWeight: 500,
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--bg-hover)'; if (!copied) e.currentTarget.style.color = 'var(--ink)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; if (!copied) e.currentTarget.style.color = 'var(--ink-3)' }}
+              title="Copy message"
+            >
+              {copied ? <Check size={13} /> : <Copy size={13} />}
+              {copied ? 'Copied' : 'Copy'}
+            </button>
+          </div>
         )}
       </div>
     </div>

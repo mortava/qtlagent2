@@ -1,12 +1,18 @@
-import { useState } from 'react'
-import { Plus, MessageSquare, Trash2, ChevronLeft, ChevronDown, ChevronRight, ExternalLink } from 'lucide-react'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import {
+  Plus, MessageSquare, Trash2, PanelLeftClose,
+  ChevronDown, ChevronRight, ArrowUpRight, Sun, Monitor, Moon,
+} from 'lucide-react'
 import type { Conversation } from '../lib/store'
+import type { Theme } from '../App'
+import FinnMark from './FinnMark'
 
 interface SidebarProps {
   conversations: Conversation[]
   activeId: string | null
   isOpen: boolean
+  theme: Theme
+  onSetTheme: (t: Theme) => void
   onToggle: () => void
   onNewChat: () => void
   onSelectConversation: (id: string) => void
@@ -19,13 +25,21 @@ const quickLinks = [
   { label: 'Submit Loan Now', url: 'https://broker-frontend-1094393703267.us-central1.run.app/' },
   { label: 'Order Appraisal', url: 'https://tqlpartner.totalqualitylending.com/' },
   { label: 'Get Approved Today', url: 'https://tqlpartner.totalqualitylending.com/forms#broker-application' },
-  { label: 'GET HELP', url: 'https://tqlpartner.totalqualitylending.com' },
+  { label: 'Get Help', url: 'https://tqlpartner.totalqualitylending.com' },
+]
+
+const themeOptions: { value: Theme; icon: typeof Sun; label: string }[] = [
+  { value: 'light', icon: Sun, label: 'Light' },
+  { value: 'system', icon: Monitor, label: 'System' },
+  { value: 'dark', icon: Moon, label: 'Dark' },
 ]
 
 export default function Sidebar({
   conversations,
   activeId,
   isOpen,
+  theme,
+  onSetTheme,
   onToggle,
   onNewChat,
   onSelectConversation,
@@ -33,12 +47,9 @@ export default function Sidebar({
 }: SidebarProps) {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({})
 
-  // Close sidebar on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        onToggle()
-      }
+      if (e.key === 'Escape' && isOpen && window.innerWidth < 768) onToggle()
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
@@ -65,18 +76,11 @@ export default function Sidebar({
     grouped[label].push(c)
   }
 
-  // Default "Today" to expanded, others collapsed
-  const isSectionExpanded = (label: string) => {
-    if (label in expandedSections) return expandedSections[label]
-    return label === 'Today'
-  }
+  const isSectionExpanded = (label: string) =>
+    label in expandedSections ? expandedSections[label] : label === 'Today'
 
-  const toggleSection = (label: string) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [label]: !isSectionExpanded(label),
-    }))
-  }
+  const toggleSection = (label: string) =>
+    setExpandedSections((prev) => ({ ...prev, [label]: !isSectionExpanded(label) }))
 
   if (!isOpen) return null
 
@@ -85,257 +89,172 @@ export default function Sidebar({
       {/* Mobile backdrop */}
       <div
         className="fixed inset-0 z-40 md:hidden"
-        style={{ background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)' }}
+        style={{ background: 'rgba(20,18,12,0.4)', backdropFilter: 'blur(3px)' }}
         onClick={onToggle}
       />
 
-      <div
-        className="w-[280px] h-full flex flex-col shrink-0 z-50 fixed md:relative"
+      <aside
+        className="w-[284px] h-full flex flex-col shrink-0 z-50 fixed md:relative"
         style={{
-          backgroundColor: 'var(--sidebar-bg)',
-          borderRight: '1px solid var(--sidebar-divider)',
-          willChange: 'transform',
+          backgroundColor: 'var(--surface)',
+          borderRight: '1px solid var(--border)',
         }}
       >
-        {/* Header — close button */}
-        <div
-          className="flex items-center justify-between"
-          style={{ padding: '6px 16px 0' }}
-        >
-          <div />
+        {/* Brand row */}
+        <div className="flex items-center justify-between" style={{ padding: '14px 14px 10px' }}>
+          <div className="flex items-center gap-2.5">
+            <FinnMark size={30} />
+            <span
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '24px',
+                fontWeight: 600,
+                color: 'var(--ink)',
+                letterSpacing: '-0.01em',
+                lineHeight: 1,
+              }}
+            >
+              FINN
+            </span>
+          </div>
           <button
             onClick={onToggle}
             className="flex items-center justify-center cursor-pointer"
             style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: 'var(--radius-sm)',
-              color: 'var(--sidebar-text)',
-              background: 'transparent',
-              border: 'none',
-              transition: 'background 0.15s, color 0.15s',
+              width: '32px', height: '32px', borderRadius: 'var(--radius-sm)',
+              color: 'var(--ink-3)', background: 'transparent', border: 'none',
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--sidebar-hover)'
-              e.currentTarget.style.color = 'var(--foreground)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent'
-              e.currentTarget.style.color = 'var(--sidebar-text)'
-            }}
-            title="Close sidebar"
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--sidebar-hover)'; e.currentTarget.style.color = 'var(--ink)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--ink-3)' }}
+            aria-label="Close sidebar"
           >
-            <ChevronLeft size={16} />
+            <PanelLeftClose size={17} />
           </button>
         </div>
 
-        {/* FINN Branding */}
-        <div style={{ padding: '0 16px 6px', textAlign: 'center' }}>
-          <span
-            style={{
-              fontFamily: 'var(--font-poppins)',
-              fontSize: '42px',
-              fontWeight: 700,
-              background: 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              letterSpacing: '0.06em',
-              display: 'block',
-              lineHeight: 1.1,
-            }}
-          >
-            FINN
-          </span>
-        </div>
-
-        {/* New Chat Button */}
-        <div style={{ padding: '0 12px', marginBottom: '8px' }}>
+        {/* New chat */}
+        <div style={{ padding: '0 12px 8px' }}>
           <button
             onClick={onNewChat}
-            className="w-full flex items-center justify-center cursor-pointer"
+            className="w-full flex items-center cursor-pointer"
             style={{
-              height: '38px',
-              background: 'transparent',
-              border: '1px solid var(--sidebar-divider)',
-              borderRadius: 'var(--radius-md)',
-              color: 'var(--foreground)',
-              fontFamily: 'var(--font-poppins)',
-              fontSize: '14px',
-              fontWeight: 500,
-              gap: '8px',
-              transition: 'background 0.15s',
+              height: '42px', padding: '0 14px',
+              background: 'var(--accent)', border: 'none',
+              borderRadius: 'var(--radius-md)', color: '#fff',
+              fontSize: '14px', fontWeight: 550, gap: '9px',
+              boxShadow: 'var(--shadow-sm)',
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--sidebar-hover)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent'
-            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--accent-hover)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--accent)' }}
           >
-            <Plus size={14} />
-            Start Fresh
+            <Plus size={16} strokeWidth={2.4} />
+            New chat
           </button>
         </div>
 
-        {/* Divider */}
-        <div
-          style={{
-            height: '1px',
-            background: 'var(--sidebar-divider)',
-            margin: '0 12px 4px 12px',
-          }}
-        />
-
-        {/* Chat History — collapsible sections */}
-        <div className="flex-1 overflow-y-auto chat-scroll">
+        {/* History */}
+        <div className="flex-1 overflow-y-auto chat-scroll" style={{ padding: '4px 0' }}>
+          {sorted.length === 0 && (
+            <p style={{ fontSize: '12.5px', color: 'var(--ink-3)', padding: '10px 18px', lineHeight: 1.5 }}>
+              Your conversations will appear here.
+            </p>
+          )}
           {Object.entries(grouped).map(([dateLabel, convos]) => {
             const expanded = isSectionExpanded(dateLabel)
             return (
-              <div key={dateLabel}>
+              <div key={dateLabel} style={{ marginBottom: '2px' }}>
                 <button
                   onClick={() => toggleSection(dateLabel)}
                   className="w-full flex items-center cursor-pointer"
                   style={{
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    color: 'var(--sidebar-text)',
-                    padding: '6px 16px 4px 12px',
-                    background: 'transparent',
-                    border: 'none',
-                    gap: '4px',
-                    transition: 'color 0.15s',
+                    fontSize: '11px', fontWeight: 600, textTransform: 'uppercase',
+                    letterSpacing: '0.06em', color: 'var(--ink-3)',
+                    padding: '8px 16px 5px 14px', background: 'transparent',
+                    border: 'none', gap: '5px',
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = 'var(--foreground)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = 'var(--sidebar-text)'
-                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--ink)' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--ink-3)' }}
                 >
-                  {expanded ? (
-                    <ChevronDown size={12} style={{ opacity: 0.6 }} />
-                  ) : (
-                    <ChevronRight size={12} style={{ opacity: 0.6 }} />
-                  )}
+                  {expanded ? <ChevronDown size={12} style={{ opacity: 0.7 }} /> : <ChevronRight size={12} style={{ opacity: 0.7 }} />}
                   {dateLabel}
-                  <span
-                    style={{
-                      fontSize: '10px',
-                      fontWeight: 400,
-                      opacity: 0.5,
-                      marginLeft: '4px',
-                    }}
-                  >
-                    ({convos.length})
+                  <span style={{ fontSize: '10px', fontWeight: 400, opacity: 0.6, marginLeft: '2px' }}>
+                    {convos.length}
                   </span>
                 </button>
-                {expanded &&
-                  convos.map((c) => {
-                    const isActive = c.id === activeId
-                    return (
-                      <div
-                        key={c.id}
-                        className="group flex items-center cursor-pointer"
-                        style={{
-                          padding: '7px 12px',
-                          margin: '1px 8px',
-                          borderRadius: 'var(--radius-sm)',
-                          fontSize: '13px',
-                          color: isActive ? 'var(--foreground)' : 'var(--sidebar-text-hover)',
-                          background: isActive ? 'var(--sidebar-active)' : 'transparent',
-                          fontWeight: isActive ? 500 : 400,
-                          transition: 'background 0.15s, color 0.15s',
-                        }}
-                        onClick={() => onSelectConversation(c.id)}
-                        onMouseEnter={(e) => {
-                          if (!isActive) {
-                            e.currentTarget.style.background = 'var(--sidebar-hover)'
-                            e.currentTarget.style.color = 'var(--foreground)'
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          if (!isActive) {
-                            e.currentTarget.style.background = 'transparent'
-                            e.currentTarget.style.color = 'var(--sidebar-text-hover)'
-                          }
-                        }}
+                {expanded && convos.map((c) => {
+                  const isActive = c.id === activeId
+                  return (
+                    <div
+                      key={c.id}
+                      className="group flex items-center cursor-pointer"
+                      style={{
+                        padding: '8px 10px', margin: '1px 8px',
+                        borderRadius: 'var(--radius-sm)', fontSize: '13.5px',
+                        color: isActive ? 'var(--ink)' : 'var(--ink-2)',
+                        background: isActive ? 'var(--sidebar-active)' : 'transparent',
+                        fontWeight: isActive ? 500 : 450,
+                      }}
+                      onClick={() => onSelectConversation(c.id)}
+                      onMouseEnter={(e) => { if (!isActive) { e.currentTarget.style.background = 'var(--sidebar-hover)'; e.currentTarget.style.color = 'var(--ink)' } }}
+                      onMouseLeave={(e) => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--ink-2)' } }}
+                    >
+                      <MessageSquare size={14} className="shrink-0" style={{ color: isActive ? 'var(--accent)' : 'var(--ink-4)', marginRight: '9px' }} />
+                      <span className="flex-1 truncate">{c.title}</span>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); onDeleteConversation(c.id) }}
+                        className="opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer"
+                        style={{ padding: '4px', borderRadius: 'var(--radius-xs)', color: 'var(--ink-3)', background: 'transparent', border: 'none' }}
+                        onMouseEnter={(e) => { e.currentTarget.style.color = '#d9534f' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--ink-3)' }}
+                        aria-label="Delete conversation"
                       >
-                        <MessageSquare
-                          size={14}
-                          className="shrink-0"
-                          style={{ color: 'var(--sidebar-text)', marginRight: '8px' }}
-                        />
-                        <span className="flex-1 truncate">{c.title}</span>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            onDeleteConversation(c.id)
-                          }}
-                          className="opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer"
-                          style={{
-                            padding: '4px',
-                            borderRadius: 'var(--radius-xs)',
-                            color: 'var(--sidebar-text)',
-                            background: 'transparent',
-                            border: 'none',
-                            transition: 'opacity 0.15s, color 0.15s',
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.color = '#ef4444'
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.color = 'var(--sidebar-text)'
-                          }}
-                          title="Delete conversation"
-                        >
-                          <Trash2 size={12} />
-                        </button>
-                      </div>
-                    )
-                  })}
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  )
+                })}
               </div>
             )
           })}
         </div>
 
-        {/* Quick Links */}
+        {/* Quick links */}
         <div className="quick-links-container">
-          <div className="quick-links-title">Quick Links</div>
+          <div className="quick-links-title">Broker Tools</div>
           {quickLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="quick-link"
-            >
-              <ExternalLink size={14} style={{ opacity: 0.5 }} />
+            <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="quick-link">
+              <ArrowUpRight size={15} />
               {link.label}
             </a>
           ))}
         </div>
 
-        {/* Bottom Section */}
-        <div
-          style={{
-            borderTop: '1px solid var(--sidebar-divider)',
-            padding: '10px 16px',
-          }}
-        >
-          <div
-            style={{
-              fontSize: '10px',
-              color: 'var(--sidebar-text)',
-              opacity: 0.6,
-            }}
-          >
-            NMLS #1933377
+        {/* Footer: theme + attribution */}
+        <div style={{ borderTop: '1px solid var(--border)', padding: '10px 12px 12px' }}>
+          <div className="flex items-center justify-between" style={{ marginBottom: '10px' }}>
+            <span style={{ fontSize: '10.5px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--ink-3)' }}>
+              Theme
+            </span>
+            <div className="theme-seg" role="group" aria-label="Theme">
+              {themeOptions.map(({ value, icon: Icon, label }) => (
+                <button
+                  key={value}
+                  className={theme === value ? 'active' : ''}
+                  onClick={() => onSetTheme(value)}
+                  title={label}
+                  aria-label={label}
+                  aria-pressed={theme === value}
+                >
+                  <Icon size={14} />
+                </button>
+              ))}
+            </div>
+          </div>
+          <div style={{ fontSize: '10.5px', color: 'var(--ink-3)', lineHeight: 1.5 }}>
+            Total Quality Lending · NMLS #1933377
           </div>
         </div>
-      </div>
+      </aside>
     </>
   )
 }

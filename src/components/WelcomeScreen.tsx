@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
-import { ArrowUp } from 'lucide-react'
+import { useRef } from 'react'
+import { ArrowUp, ArrowUpRight } from 'lucide-react'
+import FinnMark from './FinnMark'
 
 interface WelcomeScreenProps {
   onPromptClick: (prompt: string) => void
@@ -8,15 +9,11 @@ interface WelcomeScreenProps {
   onSend: () => void
 }
 
-const sampleQuestions = [
-  'What are the DSCR loan requirements?',
-  'Foreign National LTV limits?',
-  'Compare loan programs for investors',
-  'Cash-out refinance guidelines?',
-  'Bank statement program details?',
-  'What is TQL\'s closing timeline?',
-  'Non-QM loan options available?',
-  'What are the reserve requirements?',
+const starters: { title: string; sub: string; prompt: string }[] = [
+  { title: 'DSCR loan requirements', sub: 'Investor cash-flow qualifying & ratios', prompt: 'What are the DSCR loan requirements and minimum ratios?' },
+  { title: 'Foreign National LTV limits', sub: 'Max leverage & documentation needed', prompt: 'What are the Foreign National LTV limits and documentation requirements?' },
+  { title: 'Bank statement program', sub: '12 vs 24 months, income calc', prompt: 'Explain the bank statement program — months required and how income is calculated.' },
+  { title: 'Cash-out refinance', sub: 'Guidelines, seasoning & limits', prompt: 'What are the cash-out refinance guidelines, seasoning, and LTV limits?' },
 ]
 
 export default function WelcomeScreen({
@@ -25,22 +22,7 @@ export default function WelcomeScreen({
   onInputChange,
   onSend,
 }: WelcomeScreenProps) {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isVisible, setIsVisible] = useState(true)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-  // Rotate sample questions with fade
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsVisible(false)
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % sampleQuestions.length)
-        setIsVisible(true)
-      }, 500) // fade out duration
-    }, 3500) // show each question for 3.5s
-
-    return () => clearInterval(interval)
-  }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -53,134 +35,90 @@ export default function WelcomeScreen({
     const el = textareaRef.current
     if (!el) return
     el.style.height = '0'
-    el.style.height = Math.max(40, Math.min(el.scrollHeight, 120)) + 'px'
+    el.style.height = Math.max(40, Math.min(el.scrollHeight, 160)) + 'px'
   }
 
   const hasText = inputValue.trim().length > 0
 
   return (
-    <div
-      className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6"
-      style={{ background: 'var(--bg-chat)' }}
-    >
-      {/* Centered Get FINN Lettermark */}
+    <div className="flex-1 overflow-y-auto chat-scroll" style={{ background: 'var(--canvas)' }}>
       <div
-        className="flex flex-col items-center justify-center"
-        style={{ marginBottom: '24px' }}
-      >
-        <span
-          className="welcome-hero"
-          style={{
-            fontFamily: 'var(--font-poppins)',
-            fontSize: '72px',
-            fontWeight: 700,
-            lineHeight: 1,
-            letterSpacing: '0.04em',
-          }}
-        >
-          <span
-            style={{
-              background: 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >GET FINN</span>
-        </span>
-      </div>
-
-      {/* Rotating sample question */}
-      <div
+        className="mx-auto flex flex-col justify-center"
         style={{
-          height: '28px',
-          marginBottom: '28px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          minHeight: '100%',
+          maxWidth: '640px',
+          padding: '40px 24px max(40px, env(safe-area-inset-bottom))',
         }}
       >
-        <button
-          onClick={() => onPromptClick(sampleQuestions[currentIndex])}
-          className="cursor-pointer"
-          style={{
-            fontFamily: 'var(--font-poppins)',
-            fontSize: '15px',
-            fontWeight: 400,
-            color: 'var(--text-tertiary)',
-            background: 'none',
-            border: 'none',
-            opacity: isVisible ? 1 : 0,
-            transition: 'opacity 0.5s ease-in-out',
-            letterSpacing: '-0.01em',
-          }}
-        >
-          {sampleQuestions[currentIndex]}
-        </button>
-      </div>
-
-      {/* Centered Input Box */}
-      <div style={{ width: '100%', maxWidth: '680px', padding: '0 2px' }}>
-        <div
-          className="flex items-end llm-bubble"
-          style={{ gap: '8px' }}
-        >
-          <textarea
-            ref={textareaRef}
-            value={inputValue}
-            onChange={(e) => {
-              onInputChange(e.target.value)
-              adjustHeight()
-            }}
-            onKeyDown={handleKeyDown}
-            placeholder="Ask FINN anything about TQL loan products..."
-            className="flex-1 bg-transparent outline-none resize-none"
+        {/* Greeting */}
+        <div className="fade-up flex flex-col items-center text-center" style={{ marginBottom: '30px' }}>
+          <div style={{ marginBottom: '20px' }}>
+            <FinnMark size={56} radius={18} />
+          </div>
+          <h1
             style={{
-              fontSize: '15px',
-              lineHeight: '1.5',
-              color: 'var(--text-primary)',
-              fontFamily: 'var(--font-sans)',
-              height: '40px',
-              maxHeight: '120px',
-              padding: '8px 0',
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(28px, 6vw, 38px)',
+              fontWeight: 600,
+              color: 'var(--ink)',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.1,
             }}
-          />
-          <button
-            onClick={onSend}
-            disabled={!hasText}
-            className="shrink-0 flex items-center justify-center disabled:cursor-not-allowed"
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '10px',
-              border: 'none',
-              background: hasText ? 'var(--interactive-accent)' : 'var(--bg-secondary)',
-              color: hasText ? 'var(--background)' : 'var(--text-quaternary)',
-              cursor: hasText ? 'pointer' : 'default',
-              transition: 'background 0.15s, color 0.15s, transform 0.1s',
-            }}
-            onMouseEnter={(e) => {
-              if (hasText) {
-                e.currentTarget.style.background = 'var(--interactive-accent-hover)'
-                e.currentTarget.style.transform = 'scale(1.04)'
-              }
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = hasText ? 'var(--interactive-accent)' : 'var(--bg-secondary)'
-              e.currentTarget.style.transform = 'scale(1)'
-            }}
-            title="Send message"
           >
-            <ArrowUp size={18} strokeWidth={2} />
-          </button>
+            How can I help you today?
+          </h1>
+          <p
+            style={{
+              marginTop: '12px',
+              fontSize: '15px',
+              color: 'var(--ink-2)',
+              maxWidth: '420px',
+              lineHeight: 1.55,
+            }}
+          >
+            Your Total Quality Lending wholesale assistant — ask about guidelines,
+            programs, and scenarios.
+          </p>
         </div>
-        <p
-          className="text-center"
-          style={{
-            marginTop: '12px',
-            fontSize: '11px',
-            color: 'var(--text-quaternary)',
-          }}
-        >
+
+        {/* Input */}
+        <div className="fade-up" style={{ width: '100%', animationDelay: '0.06s' }}>
+          <div className="flex items-end llm-bubble" style={{ gap: '8px' }}>
+            <textarea
+              ref={textareaRef}
+              value={inputValue}
+              onChange={(e) => { onInputChange(e.target.value); adjustHeight() }}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask FINN anything about TQL loan products…"
+              className="flex-1 bg-transparent outline-none resize-none"
+              style={{
+                fontSize: '15.5px', lineHeight: '1.55', color: 'var(--ink)',
+                fontFamily: 'var(--font-sans)', height: '40px', maxHeight: '160px', padding: '8px 0',
+              }}
+            />
+            <button
+              onClick={onSend}
+              disabled={!hasText}
+              className={`send-btn ${hasText ? 'is-active' : 'is-idle'}`}
+              aria-label="Send message"
+            >
+              <ArrowUp size={18} strokeWidth={2.2} />
+            </button>
+          </div>
+        </div>
+
+        {/* Starter cards */}
+        <div className="fade-up starter-grid" style={{ marginTop: '18px', animationDelay: '0.12s' }}>
+          {starters.map((s) => (
+            <button key={s.title} className="starter-card" onClick={() => onPromptClick(s.prompt)}>
+              <ArrowUpRight size={15} className="starter-card__arrow" />
+              <span className="starter-card__title">{s.title}</span>
+              <span className="starter-card__sub">{s.sub}</span>
+            </button>
+          ))}
+        </div>
+
+        <p style={{ marginTop: '22px', textAlign: 'center', fontSize: '11.5px', color: 'var(--ink-4)', lineHeight: 1.5 }}>
           FINN is an AI assistant. Verify important guideline details with your TQL Account Executive.
         </p>
       </div>
