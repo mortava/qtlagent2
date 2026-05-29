@@ -63,7 +63,7 @@ export default function WelcomeScreen({
       className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6"
       style={{ background: 'var(--bg-chat)' }}
     >
-      {/* Centered Get FIT Lettermark */}
+      {/* Centered Get FINN Lettermark */}
       <div
         className="flex flex-col items-center justify-center"
         style={{ marginBottom: '24px' }}
@@ -85,7 +85,7 @@ export default function WelcomeScreen({
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}
-          >GET FIT</span>
+          >GET FINN</span>
         </span>
       </div>
 
@@ -132,7 +132,7 @@ export default function WelcomeScreen({
               adjustHeight()
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Ask FIT anything about TQL loan products..."
+            placeholder="Ask FINN anything about TQL loan products..."
             className="flex-1 bg-transparent outline-none resize-none"
             style={{
               fontSize: '15px',
@@ -181,7 +181,7 @@ export default function WelcomeScreen({
             color: 'var(--text-quaternary)',
           }}
         >
-          FIT is an AI assistant. Verify important guideline details with your TQL Account Executive.
+          FINN is an AI assistant. Verify important guideline details with your TQL Account Executive.
         </p>
       </div>
     </div>

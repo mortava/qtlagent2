@@ -57,7 +57,7 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
               letterSpacing: '0.02em',
             }}
           >
-            FIT
+            FINN
           </span>
         </div>
         <div style={{ padding: '8px 0' }}>
@@ -67,7 +67,7 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
             <div className="typing-dot" />
           </div>
           <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>
-            FIT is thinking...
+            FINN is thinking...
           </div>
         </div>
       </div>
@@ -94,7 +94,7 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
             letterSpacing: '0.02em',
           }}
         >
-          FIT
+          FINN
         </span>
       </div>
 

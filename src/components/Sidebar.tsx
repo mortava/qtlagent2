@@ -129,7 +129,7 @@ export default function Sidebar({
           </button>
         </div>
 
-        {/* FIT Branding + Tagline */}
+        {/* FINN Branding */}
         <div style={{ padding: '0 16px 6px', textAlign: 'center' }}>
           <span
             style={{
@@ -145,20 +145,7 @@ export default function Sidebar({
               lineHeight: 1.1,
             }}
           >
-            FIT
-          </span>
-          <span
-            style={{
-              fontFamily: 'var(--font-poppins)',
-              fontSize: '11px',
-              fontWeight: 500,
-              color: '#0a0a0a',
-              letterSpacing: '0.02em',
-              display: 'block',
-              marginTop: '2px',
-            }}
-          >
-            Faith. Integrity. Trust.
+            FINN
           </span>
         </div>
 
